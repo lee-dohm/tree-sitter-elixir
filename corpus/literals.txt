@@ -149,3 +149,25 @@ Lists
       (list (integer) (integer) (integer))
       (list (integer) (integer) (integer))))
   (expression_statement (list (atom) (string))))
+
+==================================================
+Tuples
+==================================================
+
+{}
+{"foo"}
+{1, 2, 3}
+{{1, 2, 3}, {1, 2, 3}}
+{:keyword, "list"}
+
+-----
+
+(file
+  (expression_statement (tuple))
+  (expression_statement (tuple (string)))
+  (expression_statement (tuple (integer) (integer) (integer)))
+  (expression_statement
+    (tuple
+      (tuple (integer) (integer) (integer))
+      (tuple (integer) (integer) (integer))))
+  (expression_statement (tuple (atom) (string))))

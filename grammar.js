@@ -82,7 +82,14 @@ module.exports = grammar({
       $.integer,
       $.list,
       $.sigil,
-      $.string
+      $.string,
+      $.tuple
+    ),
+
+    tuple: $ => seq(
+      '{',
+      commaSep($._expression),
+      '}'
     ),
 
     sigil: $ => token(
