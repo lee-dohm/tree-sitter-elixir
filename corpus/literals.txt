@@ -136,6 +136,7 @@ Lists
 ["foo"]
 [1, 2, 3]
 [[1, 2, 3], [1, 2, 3]]
+[keyword: "list"]
 
 -----
 
@@ -146,4 +147,5 @@ Lists
   (expression_statement
     (list
       (list (integer) (integer) (integer))
-      (list (integer) (integer) (integer)))))
+      (list (integer) (integer) (integer))))
+  (expression_statement (list (atom) (string))))

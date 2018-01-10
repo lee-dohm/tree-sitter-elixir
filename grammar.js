@@ -85,29 +85,6 @@ module.exports = grammar({
       $.string
     ),
 
-    _keyword_list_entry: $ => {
-      const tupleForm = seq(
-        '{',
-        $.atom,
-        ',',
-        $._expression,
-        '}'
-      )
-
-      const atomForm = seq(
-        $._right_hand_atom,
-        $._expression
-      )
-
-      return choice(tupleForm, atomForm)
-    },
-
-    list: $ => seq(
-      '[',
-      commaSep($._expression),
-      ']'
-    ),
-
     sigil: $ => token(
         seq(
         '~',
@@ -126,11 +103,13 @@ module.exports = grammar({
       )
     ),
 
-    _atom_start: $ => /[a-zA-Z_]/,
-    _atom_continue: $ => /[a-zA-Z0-9_]/,
-    _atom_ending: $ => /[?!]/,
-    _left_hand_atom: $ => seq(':', $._atom_start, repeat($._atom_continue), optional($._atom_ending)),
-    _right_hand_atom: $ => seq($._atom_start, repeat($._atom_continue), optional($._atom_ending), ':'),
+    _keyword_list_entry: $ => seq($.atom, $._expression),
+
+    list: $ => seq(
+      '[',
+      commaSep(choice($._keyword_list_entry, $._expression)),
+      ']'
+    ),
 
     atom: $ => {
       const atomStart = /[a-zA-Z_]/
