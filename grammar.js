@@ -49,11 +49,19 @@ const
   hexLiteral = seq(choice('0x', '0X'), hexDigits)
 
 function commaSep1 (rule) {
-  return seq(rule, repeat(seq(',', rule)));
+  return seq(rule, repeat(seq(',', rule)))
 }
 
 function commaSep (rule) {
   return optional(commaSep1(rule))
+}
+
+function dotSep1 (rule) {
+  return seq(rule, repeat(seq('.', rule)))
+}
+
+function dotSep (rule) {
+  return optional(dotSep1(rule))
 }
 
 module.exports = grammar({
@@ -81,9 +89,21 @@ module.exports = grammar({
       $.float,
       $.integer,
       $.list,
+      $.map,
       $.sigil,
       $.string,
       $.tuple
+    ),
+
+    _map_element: $ => choice(
+      seq($._expression, '=>', $._expression),
+      seq($.atom, $._expression)
+    ),
+
+    map: $ => seq(
+      '%{',
+      commaSep($._map_element),
+      '}'
     ),
 
     tuple: $ => seq(

@@ -171,3 +171,24 @@ Tuples
       (tuple (integer) (integer) (integer))
       (tuple (integer) (integer) (integer))))
   (expression_statement (tuple (atom) (string))))
+
+==================================================
+Maps
+==================================================
+
+%{}
+%{"map" => 5}
+%{map: 5}
+%{map: [1, 2, 3]}
+%{"map" => {1, 2, 3}}
+%{map: %{map: 5}}
+
+-----
+
+(file
+  (expression_statement (map))
+  (expression_statement (map (string) (integer)))
+  (expression_statement (map (atom) (integer)))
+  (expression_statement (map (atom) (list (integer) (integer) (integer))))
+  (expression_statement (map (string) (tuple (integer) (integer) (integer))))
+  (expression_statement (map (atom) (map (atom) (integer)))))
