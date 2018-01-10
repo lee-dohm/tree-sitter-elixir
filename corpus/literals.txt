@@ -1,0 +1,127 @@
+==================================================
+Reserved Literals
+==================================================
+
+true
+false
+nil
+
+-----
+
+(file
+  (expression_statement (true))
+  (expression_statement (false))
+  (expression_statement (nil)))
+
+==================================================
+Strings
+==================================================
+
+"This is a string"
+"This is a string with \"escaped\" double-quotes"
+"This is a string with #{ 5 } interpolation"
+'This is a charlist'
+'This is a charlist with \'escaped\' single-quotes'
+"""
+This
+is
+a
+"multiline"
+string
+"""
+'''
+This
+is
+a
+'multiline'
+charlist
+'''
+
+-----
+
+(file
+  (expression_statement (string))
+  (expression_statement (string))
+  (expression_statement (string))
+  (expression_statement (charlist))
+  (expression_statement (charlist))
+  (expression_statement (string))
+  (expression_statement (charlist)))
+
+==================================================
+Integers
+==================================================
+
+1
+1_000
+0X1f
+0x1_F
+0O10
+0o1_0
+
+-----
+
+(file
+  (expression_statement (integer))
+  (expression_statement (integer))
+  (expression_statement (integer))
+  (expression_statement (integer))
+  (expression_statement (integer))
+  (expression_statement (integer)))
+
+==================================================
+Floats
+==================================================
+
+1.0
+12_34.56_78
+12_34.56_78e9_0
+
+-----
+
+(file
+  (expression_statement (float))
+  (expression_statement (float))
+  (expression_statement (float)))
+
+==================================================
+Atoms
+==================================================
+
+:atom
+:this_is_an_atom
+:__this_is_still_an_atom!
+:ThisIsAnAtom?
+
+-----
+
+(file
+  (expression_statement (atom))
+  (expression_statement (atom))
+  (expression_statement (atom))
+  (expression_statement (atom)))
+
+==================================================
+Sigils
+==================================================
+
+~R(test)
+~R{test}
+~R[test]
+~R<test>
+~R"test"i
+~R'test'bfg
+~R|test|a
+~R/test/m
+
+-----
+
+(file
+  (expression_statement (sigil))
+  (expression_statement (sigil))
+  (expression_statement (sigil))
+  (expression_statement (sigil))
+  (expression_statement (sigil))
+  (expression_statement (sigil))
+  (expression_statement (sigil))
+  (expression_statement (sigil)))

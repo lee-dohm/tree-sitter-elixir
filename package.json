@@ -1,0 +1,25 @@
+{
+  "name": "tree-sitter-elixir",
+  "version": "0.1.0",
+  "description": "Elixir grammar for tree-sitter",
+  "main": "index.js",
+  "keywords": [
+    "parser",
+    "lexer"
+  ],
+  "author": "Lee Dohm <lee@lee-dohm.com>",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.4.0"
+  },
+  "devDependencies": {
+    "acorn": "^2.6.4",
+    "babylon": "^6.3.26",
+    "esprima": "^2.7.1",
+    "tree-sitter-cli": "^0.8.0"
+  },
+  "scripts": {
+    "build": "tree-sitter generate && node-gyp build",
+    "test": "tree-sitter generate && node-gyp build && tree-sitter test && tree-sitter parse examples --quiet --time"
+  }
+}
