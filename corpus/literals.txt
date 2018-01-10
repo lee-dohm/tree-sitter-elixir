@@ -92,10 +92,12 @@ Atoms
 :this_is_an_atom
 :__this_is_still_an_atom!
 :ThisIsAnAtom?
+is_this_an_atom?:
 
 -----
 
 (file
+  (expression_statement (atom))
   (expression_statement (atom))
   (expression_statement (atom))
   (expression_statement (atom))
@@ -105,13 +107,13 @@ Atoms
 Sigils
 ==================================================
 
-~R(test)
+~r(test)
 ~R{test}
-~R[test]
+~r[test]
 ~R<test>
-~R"test"i
+~r"test"i
 ~R'test'bfg
-~R|test|a
+~r|test|a
 ~R/test/m
 
 -----
@@ -125,3 +127,23 @@ Sigils
   (expression_statement (sigil))
   (expression_statement (sigil))
   (expression_statement (sigil)))
+
+==================================================
+Lists
+==================================================
+
+[]
+["foo"]
+[1, 2, 3]
+[[1, 2, 3], [1, 2, 3]]
+
+-----
+
+(file
+  (expression_statement (list))
+  (expression_statement (list (string)))
+  (expression_statement (list (integer) (integer) (integer)))
+  (expression_statement
+    (list
+      (list (integer) (integer) (integer))
+      (list (integer) (integer) (integer)))))

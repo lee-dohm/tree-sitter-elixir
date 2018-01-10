@@ -48,6 +48,14 @@ const
   octalLiteral = seq(choice('0o', '0O'), octalDigits),
   hexLiteral = seq(choice('0x', '0X'), hexDigits)
 
+function commaSep1 (rule) {
+  return seq(rule, repeat(seq(',', rule)));
+}
+
+function commaSep (rule) {
+  return optional(commaSep1(rule))
+}
+
 module.exports = grammar({
   name: 'elixir',
 
@@ -59,6 +67,10 @@ module.exports = grammar({
     ),
 
     expression_statement: $ => choice(
+      $._expression,
+    ),
+
+    _expression: $ => choice(
       $._literal,
       $._reserved_literal
     ),
@@ -68,14 +80,38 @@ module.exports = grammar({
       $.charlist,
       $.float,
       $.integer,
+      $.list,
       $.sigil,
       $.string
+    ),
+
+    _keyword_list_entry: $ => {
+      const tupleForm = seq(
+        '{',
+        $.atom,
+        ',',
+        $._expression,
+        '}'
+      )
+
+      const atomForm = seq(
+        $._right_hand_atom,
+        $._expression
+      )
+
+      return choice(tupleForm, atomForm)
+    },
+
+    list: $ => seq(
+      '[',
+      commaSep($._expression),
+      ']'
     ),
 
     sigil: $ => token(
         seq(
         '~',
-        /A-Z/,
+        /[a-zA-Z]/,
         choice(
           seq('(', repeat(/[^)]/), ')'),
           seq('{', repeat(/[^}]/), '}'),
@@ -90,19 +126,20 @@ module.exports = grammar({
       )
     ),
 
+    _atom_start: $ => /[a-zA-Z_]/,
+    _atom_continue: $ => /[a-zA-Z0-9_]/,
+    _atom_ending: $ => /[?!]/,
+    _left_hand_atom: $ => seq(':', $._atom_start, repeat($._atom_continue), optional($._atom_ending)),
+    _right_hand_atom: $ => seq($._atom_start, repeat($._atom_continue), optional($._atom_ending), ':'),
+
     atom: $ => {
       const atomStart = /[a-zA-Z_]/
       const atomContinue = /[a-zA-Z0-9_]/
       const atomEnding = /[?!]/
+      const colonBefore = seq(':', atomStart, repeat(atomContinue), optional(atomEnding))
+      const colonAfter = seq(atomStart, repeat(atomContinue), optional(atomEnding), ':')
 
-      return token(
-        seq(
-          ':',
-          atomStart,
-          repeat(atomContinue),
-          optional(atomEnding)
-        )
-      )
+      return token(choice(colonBefore, colonAfter))
     },
 
     charlist: $ => token(
