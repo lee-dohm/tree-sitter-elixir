@@ -209,3 +209,24 @@ Long.Dotted.Alias
   (expression_statement (alias))
   (expression_statement (alias))
   (expression_statement (alias)))
+
+==================================================
+Structs
+==================================================
+
+%Struct{}
+%Struct{"map" => 5}
+%Dotted.Struct{map: 5}
+%Dotted.Struct{map: [1, 2, 3]}
+%Long.Dotted.Struct{"map" => {1, 2, 3}}
+%Long.Dotted.Struct{map: %{map: 5}}
+
+-----
+
+(file
+  (expression_statement (struct (alias)))
+  (expression_statement (struct (alias) (string) (integer)))
+  (expression_statement (struct (alias) (atom) (integer)))
+  (expression_statement (struct (alias) (atom) (list (integer) (integer) (integer))))
+  (expression_statement (struct (alias) (string) (tuple (integer) (integer) (integer))))
+  (expression_statement (struct (alias) (atom) (map (atom) (integer)))))

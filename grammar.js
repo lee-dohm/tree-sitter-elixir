@@ -93,8 +93,11 @@ module.exports = grammar({
       $.map,
       $.sigil,
       $.string,
+      $.struct,
       $.tuple
     ),
+
+    struct: $ => seq('%', $.alias, '{', commaSep($._map_element), '}'),
 
     alias: $ => {
       const aliasStart = /[A-Z]/
