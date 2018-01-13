@@ -105,8 +105,6 @@ module.exports = grammar({
       $.tuple
     ),
 
-    struct: $ => seq('%', $.alias, '{', commaSep($._map_element), '}'),
-
     alias: $ => {
       const aliasStart = /[A-Z]/
       const aliasContinue = /[a-zA-Z0-9_]/
@@ -114,6 +112,55 @@ module.exports = grammar({
 
       return token(dotSep1(segment))
     },
+
+    atom: $ => {
+      const atomStart = /[a-zA-Z_]/
+      const atomContinue = /[a-zA-Z0-9_]/
+      const atomEnding = /[?!]/
+      const colonBefore = seq(':', atomStart, repeat(atomContinue), optional(atomEnding))
+      const colonAfter = seq(atomStart, repeat(atomContinue), optional(atomEnding), ':')
+
+      return token(choice(colonBefore, colonAfter))
+    },
+
+    charlist: $ => token(
+      choice(
+        seq("'", repeat(choice(/[^\\'\n]/, /\\(.|\n)/)), "'"),
+        seq("'''", repeat(/.|\n/), "'''")
+      )
+    ),
+
+    float: $ => token(
+      seq(
+        digits,
+        '.',
+        digits,
+        optional(
+          seq(
+            choice('e', 'E'),
+            optional(choice('-', '+')),
+            digits
+          )
+        )
+      )
+    ),
+
+    integer: $ => token(
+      choice(
+        decimalLiteral,
+        binaryLiteral,
+        octalLiteral,
+        hexLiteral
+      )
+    ),
+
+    _keyword_list_entry: $ => seq($.atom, $._expression),
+
+    list: $ => seq(
+      '[',
+      commaSep(choice($._keyword_list_entry, $._expression)),
+      ']'
+    ),
 
     _map_element: $ => choice(
       seq($._expression, '=>', $._expression),
@@ -123,12 +170,6 @@ module.exports = grammar({
     map: $ => seq(
       '%{',
       commaSep($._map_element),
-      '}'
-    ),
-
-    tuple: $ => seq(
-      '{',
-      commaSep($._expression),
       '}'
     ),
 
@@ -147,31 +188,6 @@ module.exports = grammar({
           seq('/', repeat(/[^\/]/), '/')
         ),
         repeat(/[a-zA-Z]/)
-      )
-    ),
-
-    _keyword_list_entry: $ => seq($.atom, $._expression),
-
-    list: $ => seq(
-      '[',
-      commaSep(choice($._keyword_list_entry, $._expression)),
-      ']'
-    ),
-
-    atom: $ => {
-      const atomStart = /[a-zA-Z_]/
-      const atomContinue = /[a-zA-Z0-9_]/
-      const atomEnding = /[?!]/
-      const colonBefore = seq(':', atomStart, repeat(atomContinue), optional(atomEnding))
-      const colonAfter = seq(atomStart, repeat(atomContinue), optional(atomEnding), ':')
-
-      return token(choice(colonBefore, colonAfter))
-    },
-
-    charlist: $ => token(
-      choice(
-        seq("'", repeat(choice(/[^\\'\n]/, /\\(.|\n)/)), "'"),
-        seq("'''", repeat(/.|\n/), "'''")
       )
     ),
 
@@ -199,28 +215,12 @@ module.exports = grammar({
       )
     },
 
-    integer: $ => token(
-      choice(
-        decimalLiteral,
-        binaryLiteral,
-        octalLiteral,
-        hexLiteral
-      )
-    ),
+    struct: $ => seq('%', $.alias, '{', commaSep($._map_element), '}'),
 
-    float: $ => token(
-      seq(
-        digits,
-        '.',
-        digits,
-        optional(
-          seq(
-            choice('e', 'E'),
-            optional(choice('-', '+')),
-            digits
-          )
-        )
-      )
+    tuple: $ => seq(
+      '{',
+      commaSep($._expression),
+      '}'
     ),
 
     _reserved_literal: $ => choice(
