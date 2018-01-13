@@ -192,3 +192,20 @@ Maps
   (expression_statement (map (atom) (list (integer) (integer) (integer))))
   (expression_statement (map (string) (tuple (integer) (integer) (integer))))
   (expression_statement (map (atom) (map (atom) (integer)))))
+
+==================================================
+Aliases
+==================================================
+
+Alias
+AliasAlias
+Dotted.Alias
+Long.Dotted.Alias
+
+-----
+
+(file
+  (expression_statement (alias))
+  (expression_statement (alias))
+  (expression_statement (alias))
+  (expression_statement (alias)))

@@ -44,6 +44,10 @@
       "members": [
         {
           "type": "SYMBOL",
+          "name": "alias"
+        },
+        {
+          "type": "SYMBOL",
           "name": "atom"
         },
         {
@@ -79,6 +83,58 @@
           "name": "tuple"
         }
       ]
+    },
+    "alias": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[A-Z]"
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[a-zA-Z0-9_]"
+                }
+              }
+            ]
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "."
+                },
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "PATTERN",
+                      "value": "[A-Z]"
+                    },
+                    {
+                      "type": "REPEAT",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "[a-zA-Z0-9_]"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
     },
     "_map_element": {
       "type": "CHOICE",

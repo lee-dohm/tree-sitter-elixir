@@ -84,6 +84,7 @@ module.exports = grammar({
     ),
 
     _literal: $ => choice(
+      $.alias,
       $.atom,
       $.charlist,
       $.float,
@@ -94,6 +95,14 @@ module.exports = grammar({
       $.string,
       $.tuple
     ),
+
+    alias: $ => {
+      const aliasStart = /[A-Z]/
+      const aliasContinue = /[a-zA-Z0-9_]/
+      const segment = seq(aliasStart, repeat(aliasContinue))
+
+      return token(dotSep1(segment))
+    },
 
     _map_element: $ => choice(
       seq($._expression, '=>', $._expression),
