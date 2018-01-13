@@ -48,20 +48,28 @@ const
   octalLiteral = seq(choice('0o', '0O'), octalDigits),
   hexLiteral = seq(choice('0x', '0X'), hexDigits)
 
+function separated1 (sep, rule) {
+  return seq(rule, repeat(seq(sep, rule)))
+}
+
+function separated (sep, rule) {
+  return optional(separated1(sep, rule))
+}
+
 function commaSep1 (rule) {
-  return seq(rule, repeat(seq(',', rule)))
+  return separated1(',', rule)
 }
 
 function commaSep (rule) {
-  return optional(commaSep1(rule))
+  return separated(',', rule)
 }
 
 function dotSep1 (rule) {
-  return seq(rule, repeat(seq('.', rule)))
+  return separated1('.', rule)
 }
 
 function dotSep (rule) {
-  return optional(dotSep1(rule))
+  return separated('.', rule)
 }
 
 module.exports = grammar({
